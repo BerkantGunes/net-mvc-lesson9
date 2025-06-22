@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SatislarModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Musteri">
+          <Key>
+            <PropertyRef Name="musteriNo" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="musteriNo" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="musteriAdi" Type="nvarchar" MaxLength="50" />
+          <Property Name="musteriSoyadi" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="satis">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Tarih" Type="date" />
+          <Property Name="adSoyad" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="satisDetay">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="satisNo" Type="int" />
+          <Property Name="urun" Type="nvarchar" MaxLength="50" />
+          <Property Name="adet" Type="int" />
+        </EntityType>
+        <Association Name="FK_satisDetay_satisDetay">
+          <End Role="satis" Type="Self.satis" Multiplicity="0..1" />
+          <End Role="satisDetay" Type="Self.satisDetay" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="satis">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="satisDetay">
+              <PropertyRef Name="satisNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SatislarModelStoreContainer">
+          <EntitySet Name="Musteri" EntityType="Self.Musteri" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="satis" EntityType="Self.satis" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="satisDetay" EntityType="Self.satisDetay" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_satisDetay_satisDetay" Association="Self.FK_satisDetay_satisDetay">
+            <End Role="satis" EntitySet="satis" />
+            <End Role="satisDetay" EntitySet="satisDetay" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SatislarModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Musteri">
+          <Key>
+            <PropertyRef Name="musteriNo" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="musteriNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="musteriAdi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="musteriSoyadi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="satis">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Tarih" Type="DateTime" Precision="0" />
+          <Property Name="adSoyad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="satisDetay" Relationship="Self.FK_satisDetay_satisDetay" FromRole="satis" ToRole="satisDetay" />
+        </EntityType>
+        <EntityType Name="satisDetay">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="satisNo" Type="Int32" />
+          <Property Name="urun" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="adet" Type="Int32" />
+          <NavigationProperty Name="satis" Relationship="Self.FK_satisDetay_satisDetay" FromRole="satisDetay" ToRole="satis" />
+        </EntityType>
+        <Association Name="FK_satisDetay_satisDetay">
+          <End Role="satis" Type="Self.satis" Multiplicity="0..1" />
+          <End Role="satisDetay" Type="Self.satisDetay" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="satis">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="satisDetay">
+              <PropertyRef Name="satisNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SatislarEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Musteri" EntityType="Self.Musteri" />
+          <EntitySet Name="satis" EntityType="Self.satis" />
+          <EntitySet Name="satisDetay" EntityType="Self.satisDetay" />
+          <AssociationSet Name="FK_satisDetay_satisDetay" Association="Self.FK_satisDetay_satisDetay">
+            <End Role="satis" EntitySet="satis" />
+            <End Role="satisDetay" EntitySet="satisDetay" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SatislarModelStoreContainer" CdmEntityContainer="SatislarEntities">
+          <EntitySetMapping Name="Musteri">
+            <EntityTypeMapping TypeName="SatislarModel.Musteri">
+              <MappingFragment StoreEntitySet="Musteri">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="musteriNo" ColumnName="musteriNo" />
+                <ScalarProperty Name="musteriAdi" ColumnName="musteriAdi" />
+                <ScalarProperty Name="musteriSoyadi" ColumnName="musteriSoyadi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="satis">
+            <EntityTypeMapping TypeName="SatislarModel.satis">
+              <MappingFragment StoreEntitySet="satis">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Tarih" ColumnName="Tarih" />
+                <ScalarProperty Name="adSoyad" ColumnName="adSoyad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="satisDetay">
+            <EntityTypeMapping TypeName="SatislarModel.satisDetay">
+              <MappingFragment StoreEntitySet="satisDetay">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="satisNo" ColumnName="satisNo" />
+                <ScalarProperty Name="urun" ColumnName="urun" />
+                <ScalarProperty Name="adet" ColumnName="adet" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
